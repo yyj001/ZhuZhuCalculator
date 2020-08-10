@@ -222,8 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIos: 1,
-        textColor: Colors.black87,
-        backgroundColor: Colors.white);
+        textColor: Colors.black87);
   }
 
   double getConcentrationUnit() {
