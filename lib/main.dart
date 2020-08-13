@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:zhuzhu_calculator/myWitget/ColorBackground.dart';
 
 List<DropdownMenuItem<double>> _quatityPickList = [
   DropdownMenuItem(value: 0.000000001, child: Text('pg')),
@@ -53,14 +54,54 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var _qualityUnit = 1.0;
-  var _concentrationUnit = 1.0;
-  var _sizeUnit = 1.0;
+  GlobalKey<EditTextState> _qualityKey = GlobalKey();
+  GlobalKey<EditTextState> _concentrationKey = GlobalKey();
+  GlobalKey<EditTextState> _sizeKey = GlobalKey();
+  GlobalKey<EditTextState> _molecularKey = GlobalKey();
 
-  TextEditingController _qualityController = TextEditingController();
-  TextEditingController _concentrationController = TextEditingController();
-  TextEditingController _sizeController = TextEditingController();
-  TextEditingController _molecularController = TextEditingController();
+  List<FocusNode> _focusNodes = [
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode()
+  ];
+  List<Color> _colors = [
+    Colors.transparent,
+    Colors.transparent,
+    Colors.transparent,
+    Colors.transparent
+  ];
+  int _selectIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    for (int i = 0; i < _focusNodes.length; ++i) {
+      _focusNodes[i].addListener(() {
+        if (_focusNodes[i].hasFocus) {
+          setFocus(i);
+        }
+      });
+    }
+  }
+
+  //页面销毁
+  @override
+  void dispose() {
+    super.dispose();
+    _focusNodes.forEach((f) {
+      f.dispose();
+    });
+  }
+
+  void setFocus(int index) {
+    setState(() {
+      _colors[_selectIndex] = Colors.transparent;
+      _selectIndex = index;
+      _colors[_selectIndex] = Colors.black;
+      print("yyj" + _colors[0].toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,113 +125,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           fontSize: 12.0, fontWeight: FontWeight.bold),
                     )
                   ]),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    width: 200,
-                    height: 70,
-                    child: TextField(
-                        controller: _qualityController,
-                        keyboardType: TextInputType.numberWithOptions(),
-                        style: TextStyle(fontSize: 20),
-                        decoration: InputDecoration(
-                            labelText: "质量",
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue)),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey)))),
-                  ),
-                  DropdownButton(
-                    value: _qualityUnit,
-                    items: _quatityPickList,
-                    underline: Container(height: 0),
-                    onChanged: (value) {
-                      setState(() {
-                        _qualityUnit = value;
-                      });
-                    },
-                  ),
-                  Text("  =  ")
-                ],
-              ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      width: 200,
-                      height: 70,
-                      child: TextField(
-                          controller: _concentrationController,
-                          keyboardType: TextInputType.numberWithOptions(),
-                          style: TextStyle(fontSize: 20),
-                          decoration: InputDecoration(
-                              labelText: "浓度",
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue)),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)))),
-                    ),
-                    DropdownButton(
-                      value: _concentrationUnit,
-                      items: _concentrationPickList,
-                      underline: Container(height: 0),
-                      onChanged: (value) {
-                        setState(() {
-                          _concentrationUnit = value;
-                        });
-                      },
-                    ),
-                    Text(" *  ")
-                  ]),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      width: 200,
-                      height: 70,
-                      child: TextField(
-                          controller: _sizeController,
-                          keyboardType: TextInputType.numberWithOptions(),
-                          style: TextStyle(fontSize: 20),
-                          decoration: InputDecoration(
-                              labelText: "体积",
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue)),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)))),
-                    ),
-                    DropdownButton(
-                      value: _sizeUnit,
-                      items: _sizePickList,
-                      underline: Container(height: 0),
-                      onChanged: (value) {
-                        setState(() {
-                          _sizeUnit = value;
-                        });
-                      },
-                    ),
-                    Text("  *  ")
-                  ]),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    width: 200,
-                    height: 70,
-                    child: TextField(
-                        controller: _molecularController,
-                        keyboardType: TextInputType.numberWithOptions(),
-                        style: TextStyle(fontSize: 20),
-                        decoration: InputDecoration(
-                            labelText: "分子量",
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue)),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey)))),
-                  ),
-                ],
-              ),
+              EditText(key: _qualityKey, list:_quatityPickList, hint: "质量",),
+              EditText(key: _concentrationKey, list:_concentrationPickList, hint: "浓度",),
+              EditText(key: _sizeKey, list:_sizePickList, hint: "体积",),
+              EditText(key: _molecularKey, hint: "分子量",),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -225,39 +163,30 @@ class _MyHomePageState extends State<MyHomePage> {
         textColor: Colors.black87);
   }
 
-  double getConcentrationUnit() {
-    double result = 1.0;
-    if (_concentrationUnit == "fM") {
-      result = 0.000000001;
-    } else if (_qualityUnit == "ng") {}
-
-    return result;
-  }
-
   void calculate() {
-    bool e1 = _qualityController.text.isEmpty;
-    bool e2 = _concentrationController.text.isEmpty;
-    bool e3 = _sizeController.text.isEmpty;
-    bool e4 = _molecularController.text.isEmpty;
+    bool e1 = _qualityKey.currentState.controller.text.isEmpty;
+    bool e2 = _concentrationKey.currentState.controller.text.isEmpty;
+    bool e3 = _sizeKey.currentState.controller.text.isEmpty;
+    bool e4 = _molecularKey.currentState.controller.text.isEmpty;
     if (e4) {
       showToast("分子量不能为空");
       return;
     }
-    double quality = string2Num(_qualityController.text) * _qualityUnit;
+    double quality = string2Num(_qualityKey.currentState.controller.text) * _qualityKey.currentState.unit;
     double concentration =
-        string2Num(_concentrationController.text.toString()) *
-            _concentrationUnit;
-    double size = string2Num(_sizeController.text.toString()) * _sizeUnit;
-    double molecular = string2Num(_molecularController.text.toString());
+        string2Num(_concentrationKey.currentState.controller.text.toString()) *
+            _concentrationKey.currentState.unit;
+    double size = string2Num(_sizeKey.currentState.controller.text.toString()) * _sizeKey.currentState.unit;
+    double molecular = string2Num(_molecularKey.currentState.controller.text.toString());
     if (!e2 && !e3 && !e4) {
-      double q = concentration * size * molecular / _qualityUnit;
-      _qualityController.text = q.toString();
+      double q = concentration * size * molecular / _qualityKey.currentState.unit;
+      _qualityKey.currentState.controller.text = q.toString();
     } else if (!e1 && e2 && !e3 && !e4) {
-      double c = quality / size / molecular / _concentrationUnit;
-      _concentrationController.text = c.toString();
+      double c = quality / size / molecular / _concentrationKey.currentState.unit;
+      _concentrationKey.currentState.controller.text = c.toString();
     } else if (!e1 && !e2 && e3 && !e4) {
-      double s = quality / concentration / molecular / _sizeUnit;
-      _sizeController.text = s.toString();
+      double s = quality / concentration / molecular / _sizeKey.currentState.unit;
+      _sizeKey.currentState.controller.text = s.toString();
     } else {
       showToast("参数不足");
     }
