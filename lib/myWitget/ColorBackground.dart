@@ -14,25 +14,34 @@ class EditText extends StatefulWidget {
 class EditTextState extends State<EditText> {
   EditTextState({List<DropdownMenuItem<double>> list});
 
+  FocusNode _focusNodes = FocusNode();
   double unit = 1.0;
 
   TextEditingController controller = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _focusNodes.addListener(() {
+      if (_focusNodes.hasFocus) {
+        print(widget.hint);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     Row row = Row(
       mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        SizedBox(
-          width: 200,
-          height: 70,
+        Expanded(
           child: TextField(
-//              focusNode: _focusNodes[0],
+              focusNode: _focusNodes,
               controller: controller,
               keyboardType: TextInputType.numberWithOptions(),
               style: TextStyle(fontSize: 20),
               decoration: InputDecoration(
-//                  fillColor: _colors[0],
                   labelText: widget.hint,
                   focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue)),
