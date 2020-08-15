@@ -59,6 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<EditTextState> _sizeKey = GlobalKey();
   GlobalKey<EditTextState> _molecularKey = GlobalKey();
 
+  int selectIndex = 0;
+
   List<FocusNode> _focusNodes = [
     FocusNode(),
     FocusNode(),
@@ -112,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Container(
-          padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
+//          padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -125,10 +127,49 @@ class _MyHomePageState extends State<MyHomePage> {
                           fontSize: 12.0, fontWeight: FontWeight.bold),
                     )
                   ]),
-              EditText(key: _qualityKey, list:_quatityPickList, hint: "质量",),
-              EditText(key: _concentrationKey, list:_concentrationPickList, hint: "浓度",),
-              EditText(key: _sizeKey, list:_sizePickList, hint: "体积",),
-              EditText(key: _molecularKey, hint: "分子量",),
+              EditText(
+                key: _qualityKey,
+                list: _quatityPickList,
+                hint: "质量",
+                isSelected: selectIndex == 0,
+                onTap: () {
+                  setState(() {
+                    selectIndex = 0;
+                  });
+                },
+              ),
+              EditText(
+                key: _concentrationKey,
+                list: _concentrationPickList,
+                hint: "浓度",
+                isSelected: selectIndex == 1,
+                onTap: () {
+                  setState(() {
+                    selectIndex = 1;
+                  });
+                },
+              ),
+              EditText(
+                key: _sizeKey,
+                list: _sizePickList,
+                hint: "体积",
+                isSelected: selectIndex == 2,
+                onTap: () {
+                  setState(() {
+                    selectIndex = 2;
+                  });
+                },
+              ),
+              EditText(
+                key: _molecularKey,
+                hint: "分子量",
+                isSelected: selectIndex == 3,
+                onTap: () {
+                  setState(() {
+                    selectIndex = 3;
+                  });
+                },
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -172,20 +213,26 @@ class _MyHomePageState extends State<MyHomePage> {
       showToast("分子量不能为空");
       return;
     }
-    double quality = string2Num(_qualityKey.currentState.controller.text) * _qualityKey.currentState.unit;
+    double quality = string2Num(_qualityKey.currentState.controller.text) *
+        _qualityKey.currentState.unit;
     double concentration =
         string2Num(_concentrationKey.currentState.controller.text.toString()) *
             _concentrationKey.currentState.unit;
-    double size = string2Num(_sizeKey.currentState.controller.text.toString()) * _sizeKey.currentState.unit;
-    double molecular = string2Num(_molecularKey.currentState.controller.text.toString());
+    double size = string2Num(_sizeKey.currentState.controller.text.toString()) *
+        _sizeKey.currentState.unit;
+    double molecular =
+        string2Num(_molecularKey.currentState.controller.text.toString());
     if (!e2 && !e3 && !e4) {
-      double q = concentration * size * molecular / _qualityKey.currentState.unit;
+      double q =
+          concentration * size * molecular / _qualityKey.currentState.unit;
       _qualityKey.currentState.controller.text = q.toString();
     } else if (!e1 && e2 && !e3 && !e4) {
-      double c = quality / size / molecular / _concentrationKey.currentState.unit;
+      double c =
+          quality / size / molecular / _concentrationKey.currentState.unit;
       _concentrationKey.currentState.controller.text = c.toString();
     } else if (!e1 && !e2 && e3 && !e4) {
-      double s = quality / concentration / molecular / _sizeKey.currentState.unit;
+      double s =
+          quality / concentration / molecular / _sizeKey.currentState.unit;
       _sizeKey.currentState.controller.text = s.toString();
     } else {
       showToast("参数不足");
