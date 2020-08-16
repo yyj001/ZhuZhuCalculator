@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
-          elevation: 0.5,
+          elevation: 0.3,
         ),
         body: Stack(
           children: <Widget>[
@@ -174,9 +174,74 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 200,
                   color: Color.fromARGB(0xff, 0x2a, 0x31, 0x38),
                 )),
-            Align(alignment: Alignment.bottomCenter, child: MyKeyBoard()),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: MyKeyBoard(
+                  onClick: (String s) {
+                    addNumString(s);
+                  },
+                  onDelete: (String s){
+                    onDelete(false);
+                  },
+                )),
           ],
         ));
+  }
+
+  void onDelete(bool isDeleteAll){
+    TextEditingController controller = getCurrentTextController();
+    if (controller == null) {
+      return;
+    }
+    if(isDeleteAll){
+
+    }else{
+      int extentOffset = controller.selection.extentOffset;
+      if(extentOffset <= 0){
+        return;
+      }
+      String s1 = controller.text.substring(0, extentOffset-1);
+      String s2 = controller.text.substring(extentOffset);
+      String finalValue = s1 + s2;
+      int finalIndex = s1.length;
+      controller.value = TextEditingValue(
+          text: finalValue,
+          selection: controller.selection
+              .copyWith(baseOffset: finalIndex, extentOffset: finalIndex));
+    }
+  }
+
+  TextEditingController getCurrentTextController(){
+    TextEditingController controller = _qualityKey.currentState.controller;
+    if (_selectIndex == 0) {
+      controller = _qualityKey.currentState.controller;
+    } else if (_selectIndex == 1) {
+      controller = _concentrationKey.currentState.controller;
+    } else if (_selectIndex == 2) {
+      controller = _sizeKey.currentState.controller;
+    } else if (_selectIndex == 3) {
+      controller = _molecularKey.currentState.controller;
+    } else {
+      controller =  null;
+    }
+    return controller;
+  }
+
+  void addNumString(String s) {
+    TextEditingController controller = getCurrentTextController();
+    if (controller == null) {
+      return;
+    }
+    int extentOffset = controller.selection.extentOffset;
+    String s1 = controller.text.substring(0, extentOffset);
+    String s2 = controller.text.substring(extentOffset);
+    String finalValue = s1 + s + s2;
+    int finalIndex = (s1 + s).length;
+
+    controller.value = TextEditingValue(
+        text: finalValue,
+        selection: controller.selection
+            .copyWith(baseOffset: finalIndex, extentOffset: finalIndex));
   }
 
   double string2Num(String s) {
