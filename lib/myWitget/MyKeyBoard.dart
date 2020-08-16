@@ -30,7 +30,7 @@ class KeyBoardState extends State<MyKeyBoard> {
       child: Container(
         padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
         width: double.infinity,
-        height: 350,
+        height: 320,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(12.0)),
           color: Color.fromARGB(0xff, 0x2a, 0x31, 0x38),

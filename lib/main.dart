@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zhuzhu_calculator/myWitget/ColorBackground.dart';
 import 'package:zhuzhu_calculator/myWitget/MyKeyBoard.dart';
+import "package:vibrate/vibrate.dart";
+
 
 List<DropdownMenuItem<double>> _quatityPickList = [
   DropdownMenuItem(value: 0.000000001, child: Text('pg')),
@@ -47,7 +49,6 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
-  TabController _tabController;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -178,12 +179,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 alignment: Alignment.bottomCenter,
                 child: MyKeyBoard(
                   onClick: (String s) {
+                    var _type = FeedbackType.medium;
+                    Vibrate.feedback(_type);
                     addNumString(s);
                   },
                   onDelete: (String s){
+                    var _type = FeedbackType.medium;
+                    Vibrate.feedback(_type);
                     onDelete(false);
                   },
                   onDeleteAll: (){
+                    var _type = FeedbackType.medium;
+                    Vibrate.feedback(_type);
                     onDelete(true);
                   },
                 )),
