@@ -55,6 +55,23 @@ flutter:
     - images/size.png
     - images/down.png
 
+    - images/equal.png
+    - images/point.png
+    - images/delete.png
+    - images/icon-test_0.png
+    - images/icon-test_1.png
+    - images/icon-test_2.png
+    - images/icon-test_3.png
+    - images/icon-test_4.png
+    - images/icon-test_5.png
+    - images/icon-test_6.png
+    - images/icon-test_7.png
+    - images/icon-test_8.png
+    - images/icon-test_9.png
+    - images/move_up.png
+    - images/move_down.png
+    - images/move_left.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

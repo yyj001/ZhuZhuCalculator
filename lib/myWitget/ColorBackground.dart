@@ -58,7 +58,7 @@ class EditTextState extends State<EditText> {
               focusNode: _focusNodes,
               controller: controller,
               keyboardType: TextInputType.numberWithOptions(),
-              style: TextStyle(fontSize: 22),
+              style: TextStyle(fontSize: 28),
               decoration: InputDecoration(
                 labelText: widget.hint,
                 border: InputBorder.none,
