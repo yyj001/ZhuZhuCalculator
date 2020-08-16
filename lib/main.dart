@@ -183,6 +183,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   onDelete: (String s){
                     onDelete(false);
                   },
+                  onDeleteAll: (){
+                    onDelete(true);
+                  },
                 )),
           ],
         ));
@@ -190,25 +193,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onDelete(bool isDeleteAll){
     TextEditingController controller = getCurrentTextController();
+    int extentOffset = controller.selection.extentOffset;
+    String s1 = controller.text.substring(0, extentOffset-1);
+    String s2 = controller.text.substring(extentOffset);
+    if(extentOffset <= 0){
+      return;
+    }
+    String finalValue = "";
+    int finalIndex = 0;
     if (controller == null) {
       return;
     }
     if(isDeleteAll){
-
+      finalValue = s2;
+      finalIndex = 0;
     }else{
-      int extentOffset = controller.selection.extentOffset;
-      if(extentOffset <= 0){
-        return;
-      }
-      String s1 = controller.text.substring(0, extentOffset-1);
-      String s2 = controller.text.substring(extentOffset);
-      String finalValue = s1 + s2;
-      int finalIndex = s1.length;
-      controller.value = TextEditingValue(
-          text: finalValue,
-          selection: controller.selection
-              .copyWith(baseOffset: finalIndex, extentOffset: finalIndex));
+      finalValue = s1 + s2;
+      finalIndex = s1.length;
     }
+    controller.value = TextEditingValue(
+        text: finalValue,
+        selection: controller.selection
+            .copyWith(baseOffset: finalIndex, extentOffset: finalIndex));
   }
 
   TextEditingController getCurrentTextController(){

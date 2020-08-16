@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +59,9 @@ class KeyBoardState extends State<MyKeyBoard> {
                   Expanded(flex: 1, child: KeyBoardButton(text: "3", onClick: widget.onClick,)),
                   Expanded(flex: 1, child: KeyBoardButton(text: "6", onClick: widget.onClick,)),
                   Expanded(flex: 1, child: KeyBoardButton(text: "9", onClick: widget.onClick,)),
-                  Expanded(flex: 1, child: KeyBoardButton(text: "<", onClick: widget.onDelete,)),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "<", onClick: widget.onDelete, longClick: (){
+                    widget.onDeleteAll();
+                  },)),
                 ],
               ),
             ),
@@ -80,28 +84,34 @@ class KeyBoardState extends State<MyKeyBoard> {
 }
 
 class KeyBoardButton extends StatelessWidget {
-  KeyBoardButton({Key key, this.text, this.onClick}) : super(key: key);
+  KeyBoardButton({Key key, this.text, this.onClick, this.longClick}) : super(key: key);
   String text;
   // ignore: top_level_function_literal_block
   var onClick = (String s){};
+  VoidCallback longClick;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(1.0),
-      child: RaisedButton(
-          color: Color.fromARGB(0xff, 0x2a, 0x31, 0x38),
-          elevation: 0,
-          highlightElevation: 0,
-          focusElevation: 0,
-          highlightColor: Colors.transparent,
-          child: Text(
-            text,
-            style: TextStyle(color: Colors.blueGrey, fontSize: 20),
-          ),
-          onPressed: () {
-            onClick(text);
-          }),
+      child: GestureDetector(
+        onLongPress: (){
+          longClick();
+        },
+        child: RaisedButton(
+            color: Color.fromARGB(0xff, 0x2a, 0x31, 0x38),
+            elevation: 0,
+            highlightElevation: 0,
+            focusElevation: 0,
+            highlightColor: Colors.transparent,
+            child: Text(
+              text,
+              style: TextStyle(color: Color.fromARGB(0xff, 0x88, 0x88, 0x88), fontSize: 20),
+            ),
+            onPressed: () {
+              onClick(text);
+            }),
+      ),
     );
   }
 }
