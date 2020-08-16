@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zhuzhu_calculator/myWitget/ColorBackground.dart';
+import 'package:zhuzhu_calculator/myWitget/MyKeyBoard.dart';
 
 List<DropdownMenuItem<double>> _quatityPickList = [
   DropdownMenuItem(value: 0.000000001, child: Text('pg')),
@@ -80,86 +81,95 @@ class _MyHomePageState extends State<MyHomePage> {
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
-        body: Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        body: Stack(
+          children: <Widget>[
+            Container(
+              color: Colors.white,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Text(
-                        "计算公式：质量 (mg) = 浓度 (mM) x 体积 (mL) x 分子量 (g/mol)",
-                        style: TextStyle(
-                            fontSize: 12.0,
-                        color: Colors.black45),
-                      ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "计算公式：质量 (mg) = 浓度 (mM) x 体积 (mL) x 分子量 (g/mol)",
+                              style: TextStyle(fontSize: 12.0, color: Colors.black45),
+                            ),
+                          )
+                        ]),
+                    EditText(
+                      key: _qualityKey,
+                      list: _quatityPickList,
+                      hint: "质量",
+                      isSelected: _selectIndex == 0,
+                      onTap: () {
+                        setState(() {
+                          _selectIndex = 0;
+                        });
+                      },
+                      icon: "images/quality.png",
+                    ),
+                    EditText(
+                      key: _concentrationKey,
+                      list: _concentrationPickList,
+                      hint: "浓度",
+                      isSelected: _selectIndex == 1,
+                      onTap: () {
+                        setState(() {
+                          _selectIndex = 1;
+                        });
+                      },
+                      icon: "images/concentration.png",
+                    ),
+                    EditText(
+                      key: _sizeKey,
+                      list: _sizePickList,
+                      hint: "体积",
+                      isSelected: _selectIndex == 2,
+                      onTap: () {
+                        setState(() {
+                          _selectIndex = 2;
+                        });
+                      },
+                      icon: "images/size.png",
+                    ),
+                    EditText(
+                      key: _molecularKey,
+                      hint: "分子量",
+                      isSelected: _selectIndex == 3,
+                      onTap: () {
+                        setState(() {
+                          _selectIndex = 3;
+                        });
+                      },
+                      icon: "images/molecularKey.png",
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                            width: 300,
+                            height: 50,
+                            padding: EdgeInsets.fromLTRB(0, 0, 18, 0),
+                            child: RaisedButton(
+                                color: Colors.blue,
+                                child: Text("计算"),
+                                onPressed: calculate))
+                      ],
                     )
-                  ]),
-              EditText(
-                key: _qualityKey,
-                list: _quatityPickList,
-                hint: "质量",
-                isSelected: _selectIndex == 0,
-                onTap: () {
-                  setState(() {
-                    _selectIndex = 0;
-                  });
-                },
-                icon: "images/quality.png",
+                  ],
+                ),
               ),
-              EditText(
-                key: _concentrationKey,
-                list: _concentrationPickList,
-                hint: "浓度",
-                isSelected: _selectIndex == 1,
-                onTap: () {
-                  setState(() {
-                    _selectIndex = 1;
-                  });
-                },
-                icon: "images/concentration.png",
-              ),
-              EditText(
-                key: _sizeKey,
-                list: _sizePickList,
-                hint: "体积",
-                isSelected: _selectIndex == 2,
-                onTap: () {
-                  setState(() {
-                    _selectIndex = 2;
-                  });
-                },
-                icon: "images/size.png",
-              ),
-              EditText(
-                key: _molecularKey,
-                hint: "分子量",
-                isSelected: _selectIndex == 3,
-                onTap: () {
-                  setState(() {
-                    _selectIndex = 3;
-                  });
-                },
-                icon: "images/molecularKey.png",
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                      width: 300,
-                      height: 50,
-                      padding: EdgeInsets.fromLTRB(0, 0, 18, 0),
-                      child: RaisedButton(
-                          color: Colors.blue,
-                          child: Text("计算"),
-                          onPressed: calculate))
-                ],
-              )
-            ],
-          ),
+            ),
+
+            Align(
+              alignment: Alignment.bottomCenter,
+                child: MyKeyBoard())
+          ],
         ));
   }
 
