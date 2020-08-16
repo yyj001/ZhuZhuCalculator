@@ -37,9 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primaryColor: Colors.white),
       home: MyHomePage(title: '摩尔浓度计算器'),
     );
   }
@@ -49,6 +47,7 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
+  TabController _tabController;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -80,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
+          elevation: 0.5,
         ),
         body: Stack(
           children: <Widget>[
@@ -97,7 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: Text(
                               "计算公式：质量 (mg) = 浓度 (mM) x 体积 (mL) x 分子量 (g/mol)",
-                              style: TextStyle(fontSize: 12.0, color: Colors.black45),
+                              style: TextStyle(
+                                  fontSize: 12.0, color: Colors.black45),
                             ),
                           )
                         ]),
@@ -165,10 +166,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-
+            // 解决全面屏底部颜色空间隙
             Align(
-              alignment: Alignment.bottomCenter,
-                child: MyKeyBoard())
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: double.infinity,
+                  height: 200,
+                  color: Color.fromARGB(0xff, 0x2a, 0x31, 0x38),
+                )),
+            Align(alignment: Alignment.bottomCenter, child: MyKeyBoard()),
           ],
         ));
   }

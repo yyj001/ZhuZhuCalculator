@@ -7,59 +7,67 @@ class MyKeyBoard extends StatefulWidget {
 }
 
 class KeyBoardState extends State<MyKeyBoard> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 320,
-      color: Color.fromARGB(0xff, 0x2a, 0x31, 0x38),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: <Widget>[
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-              ],
+    return SafeArea(
+      child: Container(
+        width: double.infinity,
+        height: 320,
+        color: Color.fromARGB(0xff, 0x2a, 0x31, 0x38),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: <Widget>[
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: <Widget>[
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-              ],
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: <Widget>[
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: <Widget>[
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-              ],
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: <Widget>[
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: <Widget>[
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-                Expanded(flex: 1, child: KeyBoardButton(text: "1")),
-              ],
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: <Widget>[
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                  Expanded(flex: 1, child: KeyBoardButton(text: "1")),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
