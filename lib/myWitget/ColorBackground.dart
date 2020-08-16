@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditText extends StatefulWidget {
-  EditText({Key key, this.list, this.hint, this.onTap, this.isSelected})
+  EditText({Key key, this.list, this.hint, this.onTap, this.isSelected, this.icon})
       : super(key: key);
 
   final List<DropdownMenuItem<double>> list;
   String hint;
   VoidCallback onTap;
   bool isSelected;
+  String icon;
 
   @override
   EditTextState createState() => EditTextState();
@@ -39,41 +40,60 @@ class EditTextState extends State<EditText> {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Expanded(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+          child: Image.asset(widget.icon, width: 25, height: 25,),
+        ),
+      ],
+    );
+    /**
+     * textfield
+     */
+    row.children.add(Expanded(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+        child: Directionality(
+          textDirection: TextDirection.ltr,
           child: TextField(
               focusNode: _focusNodes,
               controller: controller,
               keyboardType: TextInputType.numberWithOptions(),
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 22),
               decoration: InputDecoration(
-                  labelText: widget.hint,
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue)),
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey)))),
+                labelText: widget.hint,
+                border: InputBorder.none,
+                labelStyle: TextStyle(color: Colors.grey, fontSize: 16),
+              )),
         ),
-      ],
-    );
+      ),
+    ));
+
+    /**
+     * 单位
+     */
     if (widget.list != null) {
-      row.children.add(DropdownButton(
-        value: unit,
-        items: widget.list,
-        underline: Container(height: 0),
-        onChanged: (value) {
-          setState(() {
-            unit = value;
-            FocusScope.of(context).requestFocus(_focusNodes);
-          });
-        },
+      row.children.add(Container(
+        padding: EdgeInsets.fromLTRB(0, 0, 17, 0),
+        child: DropdownButton(
+          value: unit,
+          items: widget.list,
+          icon: Image.asset("images/down.png", width: 20, height: 20,),
+          underline: Container(height: 0),
+          onChanged: (value) {
+            setState(() {
+              unit = value;
+              FocusScope.of(context).requestFocus(_focusNodes);
+            });
+          },
+        ),
       ));
     }
     return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 50,
-        minWidth: double.infinity
-      ),
-      child:Container(
-        color: widget.isSelected == true? Color.fromARGB(0x05, 0x33, 0x33, 0x33): Colors.white,
+      constraints: BoxConstraints( minHeight: 50, minWidth: double.infinity),
+      child: Container(
+        color: widget.isSelected == true
+            ? Color.fromARGB(0x09, 0x33, 0x33, 0x33)
+            : Colors.white,
         child: row,
       ),
     );

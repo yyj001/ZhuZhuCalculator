@@ -59,50 +59,17 @@ class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<EditTextState> _sizeKey = GlobalKey();
   GlobalKey<EditTextState> _molecularKey = GlobalKey();
 
-  int selectIndex = 0;
-
-  List<FocusNode> _focusNodes = [
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode()
-  ];
-  List<Color> _colors = [
-    Colors.transparent,
-    Colors.transparent,
-    Colors.transparent,
-    Colors.transparent
-  ];
-  int _selectIndex = 0;
+  int _selectIndex = -1;
 
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < _focusNodes.length; ++i) {
-      _focusNodes[i].addListener(() {
-        if (_focusNodes[i].hasFocus) {
-          setFocus(i);
-        }
-      });
-    }
   }
 
   //页面销毁
   @override
   void dispose() {
     super.dispose();
-    _focusNodes.forEach((f) {
-      f.dispose();
-    });
-  }
-
-  void setFocus(int index) {
-    setState(() {
-      _colors[_selectIndex] = Colors.transparent;
-      _selectIndex = index;
-      _colors[_selectIndex] = Colors.black;
-      print("yyj" + _colors[0].toString());
-    });
   }
 
   @override
@@ -114,61 +81,69 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Container(
-//          padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
+          color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      "计算公式：质量 (mg) = 浓度 (mM) x 体积 (mL) x 分子量 (g/mol)",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Text(
+                        "计算公式：质量 (mg) = 浓度 (mM) x 体积 (mL) x 分子量 (g/mol)",
+                        style: TextStyle(
+                            fontSize: 12.0,
+                        color: Colors.black45),
+                      ),
                     )
                   ]),
               EditText(
                 key: _qualityKey,
                 list: _quatityPickList,
                 hint: "质量",
-                isSelected: selectIndex == 0,
+                isSelected: _selectIndex == 0,
                 onTap: () {
                   setState(() {
-                    selectIndex = 0;
+                    _selectIndex = 0;
                   });
                 },
+                icon: "images/quality.png",
               ),
               EditText(
                 key: _concentrationKey,
                 list: _concentrationPickList,
                 hint: "浓度",
-                isSelected: selectIndex == 1,
+                isSelected: _selectIndex == 1,
                 onTap: () {
                   setState(() {
-                    selectIndex = 1;
+                    _selectIndex = 1;
                   });
                 },
+                icon: "images/concentration.png",
               ),
               EditText(
                 key: _sizeKey,
                 list: _sizePickList,
                 hint: "体积",
-                isSelected: selectIndex == 2,
+                isSelected: _selectIndex == 2,
                 onTap: () {
                   setState(() {
-                    selectIndex = 2;
+                    _selectIndex = 2;
                   });
                 },
+                icon: "images/size.png",
               ),
               EditText(
                 key: _molecularKey,
                 hint: "分子量",
-                isSelected: selectIndex == 3,
+                isSelected: _selectIndex == 3,
                 onTap: () {
                   setState(() {
-                    selectIndex = 3;
+                    _selectIndex = 3;
                   });
                 },
+                icon: "images/molecularKey.png",
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
