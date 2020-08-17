@@ -179,18 +179,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 alignment: Alignment.bottomCenter,
                 child: MyKeyBoard(
                   onClick: (String s) {
-                    var _type = FeedbackType.medium;
-                    Vibrate.feedback(_type);
                     addNumString(s);
                   },
                   onDelete: (String s){
-                    var _type = FeedbackType.medium;
-                    Vibrate.feedback(_type);
                     onDelete(false);
                   },
                   onDeleteAll: (){
-                    var _type = FeedbackType.medium;
-                    Vibrate.feedback(_type);
                     onDelete(true);
                   },
                 )),

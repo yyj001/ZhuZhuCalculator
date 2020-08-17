@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import "package:vibrate/vibrate.dart";
 
 class MyKeyBoard extends StatefulWidget {
   MyKeyBoard({Key key, this.onClick, this.onDelete, this.onDeleteAll})
@@ -44,10 +45,9 @@ class KeyBoardState extends State<MyKeyBoard> {
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
-                        text: "1",
-                        onClick: widget.onClick,
-                        iconPath: "images/icon-test_1.png",
-                      )),
+                          text: "7",
+                          onClick: widget.onClick,
+                          iconPath: "images/icon-test_7.png")),
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
@@ -57,9 +57,10 @@ class KeyBoardState extends State<MyKeyBoard> {
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
-                          text: "7",
-                          onClick: widget.onClick,
-                          iconPath: "images/icon-test_7.png")),
+                        text: "1",
+                        onClick: widget.onClick,
+                        iconPath: "images/icon-test_1.png",
+                      )),
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
@@ -76,9 +77,9 @@ class KeyBoardState extends State<MyKeyBoard> {
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
-                          text: "2",
+                          text: "8",
                           onClick: widget.onClick,
-                          iconPath: "images/icon-test_2.png")),
+                          iconPath: "images/icon-test_8.png")),
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
@@ -88,9 +89,9 @@ class KeyBoardState extends State<MyKeyBoard> {
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
-                          text: "8",
+                          text: "2",
                           onClick: widget.onClick,
-                          iconPath: "images/icon-test_8.png")),
+                          iconPath: "images/icon-test_2.png")),
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
@@ -107,9 +108,9 @@ class KeyBoardState extends State<MyKeyBoard> {
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
-                          text: "3",
+                          text: "9",
                           onClick: widget.onClick,
-                          iconPath: "images/icon-test_3.png")),
+                          iconPath: "images/icon-test_9.png")),
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
@@ -119,9 +120,9 @@ class KeyBoardState extends State<MyKeyBoard> {
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
-                          text: "9",
+                          text: "3",
                           onClick: widget.onClick,
-                          iconPath: "images/icon-test_9.png")),
+                          iconPath: "images/icon-test_3.png")),
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
@@ -222,6 +223,8 @@ class KeyBoardButton extends StatelessWidget {
         onLongPress: longClick == null
             ? null
             : () {
+                var _type = FeedbackType.light;
+                Vibrate.feedback(_type);
                 longClick();
               },
         child: RaisedButton(
@@ -233,7 +236,7 @@ class KeyBoardButton extends StatelessWidget {
             elevation: 0,
             highlightElevation: 0,
             focusElevation: 0,
-            highlightColor: Colors.transparent,
+            highlightColor: Color.fromARGB(0x50, 0x00, 0x00, 0x00),
             child: contentWidget,
             onPressed: () {
               onClick(text);
