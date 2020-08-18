@@ -88,6 +88,9 @@ class EditTextState extends State<EditText> {
         ),
       ));
     }
+    if(widget.isSelected){
+      _focusNodes.requestFocus();
+    }
     return ConstrainedBox(
       constraints: BoxConstraints( minHeight: 50, minWidth: double.infinity),
       child: Container(

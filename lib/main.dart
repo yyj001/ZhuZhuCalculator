@@ -150,19 +150,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       icon: "images/molecularKey.png",
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                            width: 300,
-                            height: 50,
-                            padding: EdgeInsets.fromLTRB(0, 0, 18, 0),
-                            child: RaisedButton(
-                                color: Colors.blue,
-                                child: Text("计算"),
-                                onPressed: calculate))
-                      ],
-                    )
                   ],
                 ),
               ),
@@ -178,127 +165,138 @@ class _MyHomePageState extends State<MyHomePage> {
             Align(
                 alignment: Alignment.bottomCenter,
                 child: MyKeyBoard(
-                  onClick: (String s) {
-                    addNumString(s);
-                  },
-                  onDelete: (String s){
-                    onDelete(false);
-                  },
-                  onDeleteAll: (){
-                    onDelete(true);
-                  },
+                  onClick: (String s) => addNumString(s),
+                  onDelete: (String s) => onDelete(false),
+                  onDeleteAll: () => onDelete(true),
+                  onFinish: () => calculate(),
+                  onMove: (bool isUp)=> onMove(isUp),
                 )),
           ],
         ));
   }
 
-  void onDelete(bool isDeleteAll){
-    TextEditingController controller = getCurrentTextController();
-    int extentOffset = controller.selection.extentOffset;
-    String s1 = controller.text.substring(0, extentOffset-1);
-    String s2 = controller.text.substring(extentOffset);
-    if(extentOffset <= 0){
-      return;
-    }
-    String finalValue = "";
-    int finalIndex = 0;
-    if (controller == null) {
-      return;
-    }
-    if(isDeleteAll){
-      finalValue = s2;
-      finalIndex = 0;
-    }else{
-      finalValue = s1 + s2;
-      finalIndex = s1.length;
-    }
-    controller.value = TextEditingValue(
-        text: finalValue,
-        selection: controller.selection
-            .copyWith(baseOffset: finalIndex, extentOffset: finalIndex));
+  void onMove(bool isUp) {
+    setState(() {
+      if (isUp) {
+        _selectIndex--;
+        if (_selectIndex < 0) {
+          _selectIndex = 3;
+        }
+      } else {
+        _selectIndex++;
+        if (_selectIndex > 3) {
+          _selectIndex = 0;
+        }
+      }
+    });
   }
 
-  TextEditingController getCurrentTextController(){
-    TextEditingController controller = _qualityKey.currentState.controller;
-    if (_selectIndex == 0) {
-      controller = _qualityKey.currentState.controller;
-    } else if (_selectIndex == 1) {
-      controller = _concentrationKey.currentState.controller;
-    } else if (_selectIndex == 2) {
-      controller = _sizeKey.currentState.controller;
-    } else if (_selectIndex == 3) {
-      controller = _molecularKey.currentState.controller;
-    } else {
-      controller =  null;
-    }
-    return controller;
+void onDelete(bool isDeleteAll) {
+  TextEditingController controller = getCurrentTextController();
+  int extentOffset = controller.selection.extentOffset;
+  String s1 = controller.text.substring(0, extentOffset - 1);
+  String s2 = controller.text.substring(extentOffset);
+  if (extentOffset <= 0) {
+    return;
   }
-
-  void addNumString(String s) {
-    TextEditingController controller = getCurrentTextController();
-    if (controller == null) {
-      return;
-    }
-    int extentOffset = controller.selection.extentOffset;
-    String s1 = controller.text.substring(0, extentOffset);
-    String s2 = controller.text.substring(extentOffset);
-    String finalValue = s1 + s + s2;
-    int finalIndex = (s1 + s).length;
-
-    controller.value = TextEditingValue(
-        text: finalValue,
-        selection: controller.selection
-            .copyWith(baseOffset: finalIndex, extentOffset: finalIndex));
+  String finalValue = "";
+  int finalIndex = 0;
+  if (controller == null) {
+    return;
   }
-
-  double string2Num(String s) {
-    if (s.isEmpty) {
-      return 0.0;
-    }
-    return double.parse(s);
+  if (isDeleteAll) {
+    finalValue = s2;
+    finalIndex = 0;
+  } else {
+    finalValue = s1 + s2;
+    finalIndex = s1.length;
   }
-
-  void showToast(String tips) {
-    Fluttertoast.showToast(
-        msg: tips,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIos: 1,
-        textColor: Colors.black87);
-  }
-
-  void calculate() {
-    bool e1 = _qualityKey.currentState.controller.text.isEmpty;
-    bool e2 = _concentrationKey.currentState.controller.text.isEmpty;
-    bool e3 = _sizeKey.currentState.controller.text.isEmpty;
-    bool e4 = _molecularKey.currentState.controller.text.isEmpty;
-    if (e4) {
-      showToast("分子量不能为空");
-      return;
-    }
-    double quality = string2Num(_qualityKey.currentState.controller.text) *
-        _qualityKey.currentState.unit;
-    double concentration =
-        string2Num(_concentrationKey.currentState.controller.text.toString()) *
-            _concentrationKey.currentState.unit;
-    double size = string2Num(_sizeKey.currentState.controller.text.toString()) *
-        _sizeKey.currentState.unit;
-    double molecular =
-        string2Num(_molecularKey.currentState.controller.text.toString());
-    if (!e2 && !e3 && !e4) {
-      double q =
-          concentration * size * molecular / _qualityKey.currentState.unit;
-      _qualityKey.currentState.controller.text = q.toString();
-    } else if (!e1 && e2 && !e3 && !e4) {
-      double c =
-          quality / size / molecular / _concentrationKey.currentState.unit;
-      _concentrationKey.currentState.controller.text = c.toString();
-    } else if (!e1 && !e2 && e3 && !e4) {
-      double s =
-          quality / concentration / molecular / _sizeKey.currentState.unit;
-      _sizeKey.currentState.controller.text = s.toString();
-    } else {
-      showToast("参数不足");
-    }
-  }
+  controller.value = TextEditingValue(
+      text: finalValue,
+      selection: controller.selection
+          .copyWith(baseOffset: finalIndex, extentOffset: finalIndex));
 }
+
+TextEditingController getCurrentTextController() {
+  TextEditingController controller = _qualityKey.currentState.controller;
+  if (_selectIndex == 0) {
+    controller = _qualityKey.currentState.controller;
+  } else if (_selectIndex == 1) {
+    controller = _concentrationKey.currentState.controller;
+  } else if (_selectIndex == 2) {
+    controller = _sizeKey.currentState.controller;
+  } else if (_selectIndex == 3) {
+    controller = _molecularKey.currentState.controller;
+  } else {
+    controller = null;
+  }
+  return controller;
+}
+
+void addNumString(String s) {
+  TextEditingController controller = getCurrentTextController();
+  if (controller == null) {
+    return;
+  }
+  int extentOffset = controller.selection.extentOffset;
+  String s1 = controller.text.substring(0, extentOffset);
+  String s2 = controller.text.substring(extentOffset);
+  String finalValue = s1 + s + s2;
+  int finalIndex = (s1 + s).length;
+
+  controller.value = TextEditingValue(
+      text: finalValue,
+      selection: controller.selection
+          .copyWith(baseOffset: finalIndex, extentOffset: finalIndex));
+}
+
+double string2Num(String s) {
+  if (s.isEmpty) {
+    return 0.0;
+  }
+  return double.parse(s);
+}
+
+void showToast(String tips) {
+  Fluttertoast.showToast(
+      msg: tips,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIos: 1,
+      textColor: Colors.black87);
+}
+
+void calculate() {
+  bool e1 = _qualityKey.currentState.controller.text.isEmpty;
+  bool e2 = _concentrationKey.currentState.controller.text.isEmpty;
+  bool e3 = _sizeKey.currentState.controller.text.isEmpty;
+  bool e4 = _molecularKey.currentState.controller.text.isEmpty;
+  if (e4) {
+    showToast("分子量不能为空");
+    return;
+  }
+  double quality = string2Num(_qualityKey.currentState.controller.text) *
+      _qualityKey.currentState.unit;
+  double concentration =
+      string2Num(_concentrationKey.currentState.controller.text.toString()) *
+          _concentrationKey.currentState.unit;
+  double size = string2Num(_sizeKey.currentState.controller.text.toString()) *
+      _sizeKey.currentState.unit;
+  double molecular =
+  string2Num(_molecularKey.currentState.controller.text.toString());
+  if (!e2 && !e3 && !e4) {
+    double q =
+        concentration * size * molecular / _qualityKey.currentState.unit;
+    _qualityKey.currentState.controller.text = q.toString();
+  } else if (!e1 && e2 && !e3 && !e4) {
+    double c =
+        quality / size / molecular / _concentrationKey.currentState.unit;
+    _concentrationKey.currentState.controller.text = c.toString();
+  } else if (!e1 && !e2 && e3 && !e4) {
+    double s =
+        quality / concentration / molecular / _sizeKey.currentState.unit;
+    _sizeKey.currentState.controller.text = s.toString();
+  } else {
+    showToast("参数不足");
+  }
+}}

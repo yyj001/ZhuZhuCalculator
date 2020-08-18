@@ -1,19 +1,20 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "package:vibrate/vibrate.dart";
 
 class MyKeyBoard extends StatefulWidget {
-  MyKeyBoard({Key key, this.onClick, this.onDelete, this.onDeleteAll})
+  MyKeyBoard({Key key, this.onClick, this.onDelete, this.onDeleteAll,this.onFinish, this.onMove})
       : super(key: key);
   VoidCallback onDeleteAll;
+  VoidCallback onFinish;
 
   // ignore: top_level_function_literal_block
   var onClick = (String s) {};
 
   // ignore: top_level_function_literal_block
   var onDelete = (String s) {};
+
+  var onMove = (bool isUp) {};
 
   @override
   KeyBoardState createState() => KeyBoardState();
@@ -135,12 +136,6 @@ class KeyBoardState extends State<MyKeyBoard> {
                 ],
               ),
             ),
-//            Container(
-//              padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
-//              height: 280,
-//              width: 0.8,
-//              color: Color.fromARGB(0x22, 0x88, 0x88, 0x88),
-//            ),
             Expanded(
               flex: 1,
               child: Column(
@@ -148,31 +143,23 @@ class KeyBoardState extends State<MyKeyBoard> {
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
-                        text: "0",
-                        onClick: widget.onClick,
+                        text: "up",
+                        onClick: (String s) => widget.onMove(true),
                         iconPath: "images/move_up.png",
                       )),
                   Expanded(
                       flex: 1,
                       child: KeyBoardButton(
-                        text: "0",
-                        onClick: widget.onClick,
+                        text: "down",
+                        onClick: (String s) => widget.onMove(false),
                         iconPath: "images/move_down.png",
                       )),
-//                  Expanded(
-//                      flex: 1,
-//                      child: KeyBoardButton(
-//                        text: "0",
-//                        onClick: widget.onClick,
-//                        iconPath: "images/move_left.png",
-//                      )),
                   Expanded(
                       flex: 2,
                       child: KeyBoardButton(
                         text: "=",
-                        onClick: widget.onClick,
+                        onClick: (String s) => widget.onFinish(),
                         iconPath: "images/equal.png",
-//                        btnColor: Color.fromARGB(0xcc, 0x22, 0x328, 0x2c),
                         btnColor: Color.fromARGB(0xcc, 0x36, 0x3c, 0x4a),
                       )),
                 ],
@@ -217,31 +204,28 @@ class KeyBoardButton extends StatelessWidget {
         width: 26,
       );
     }
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: GestureDetector(
-        onLongPress: longClick == null
-            ? null
-            : () {
-                var _type = FeedbackType.light;
-                Vibrate.feedback(_type);
-                longClick();
-              },
-        child: RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            color: btnColor == null
-                ? Color.fromARGB(0xff, 0x2a, 0x31, 0x38)
-                : btnColor,
-            elevation: 0,
-            highlightElevation: 0,
-            focusElevation: 0,
-            highlightColor: Color.fromARGB(0x50, 0x00, 0x00, 0x00),
-            child: contentWidget,
-            onPressed: () {
-              onClick(text);
-            }),
-      ),
+    return GestureDetector(
+      onLongPress: longClick == null
+          ? null
+          : () {
+              var _type = FeedbackType.light;
+              Vibrate.feedback(_type);
+              longClick();
+            },
+      child: RaisedButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          color: btnColor == null
+              ? Color.fromARGB(0xff, 0x2a, 0x31, 0x38)
+              : btnColor,
+          elevation: 0,
+          highlightElevation: 0,
+          focusElevation: 0,
+          highlightColor: Color.fromARGB(0x20, 0xff, 0xff, 0xff),
+          child: contentWidget,
+          onPressed: () {
+            onClick(text);
+          }),
     );
   }
 }
