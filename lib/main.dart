@@ -258,12 +258,13 @@ double string2Num(String s) {
 }
 
 void showToast(String tips) {
+  var _type = FeedbackType.medium;
+  Vibrate.feedback(_type);
   Fluttertoast.showToast(
       msg: tips,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
-      timeInSecForIos: 1,
-      textColor: Colors.black87);
+      timeInSecForIos: 1,);
 }
 
 void calculate() {
