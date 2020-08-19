@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditText extends StatefulWidget {
-  EditText({Key key, this.list, this.hint, this.onTap, this.isSelected, this.icon})
+  EditText(
+      {Key key, this.list, this.hint, this.onTap, this.isSelected, this.icon, this.enable})
       : super(key: key);
 
   final List<DropdownMenuItem<double>> list;
@@ -10,6 +11,7 @@ class EditText extends StatefulWidget {
   VoidCallback onTap;
   bool isSelected;
   String icon;
+  bool enable = true;
 
   @override
   EditTextState createState() => EditTextState();
@@ -42,7 +44,11 @@ class EditTextState extends State<EditText> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-          child: Image.asset(widget.icon, width: 25, height: 25,),
+          child: Image.asset(
+            widget.icon,
+            width: 25,
+            height: 25,
+          ),
         ),
       ],
     );
@@ -55,6 +61,7 @@ class EditTextState extends State<EditText> {
         child: Directionality(
           textDirection: TextDirection.ltr,
           child: TextField(
+              enabled: widget.enable,
               focusNode: _focusNodes,
               controller: controller,
               keyboardType: TextInputType.numberWithOptions(),
@@ -77,22 +84,28 @@ class EditTextState extends State<EditText> {
         child: DropdownButton(
           value: unit,
           items: widget.list,
-          icon: Image.asset("images/down.png", width: 20, height: 20,),
+          icon: Image.asset(
+            "images/down.png",
+            width: 20,
+            height: 20,
+          ),
           underline: Container(height: 0),
           onChanged: (value) {
             setState(() {
               unit = value;
-              FocusScope.of(context).requestFocus(_focusNodes);
+              if(widget.enable){
+                FocusScope.of(context).requestFocus(_focusNodes);
+              }
             });
           },
         ),
       ));
     }
-    if(widget.isSelected){
+    if (widget.isSelected) {
       _focusNodes.requestFocus();
     }
     return ConstrainedBox(
-      constraints: BoxConstraints( minHeight: 50, minWidth: double.infinity),
+      constraints: BoxConstraints(minHeight: 50, minWidth: double.infinity),
       child: Container(
         color: widget.isSelected == true
             ? Color.fromARGB(0x09, 0x33, 0x33, 0x33)

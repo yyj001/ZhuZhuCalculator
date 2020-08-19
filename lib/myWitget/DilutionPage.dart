@@ -89,6 +89,7 @@ class _DilutionPageState extends State<DilutionPage> {
                         });
                       },
                       icon: "images/size.png",
+                      enable: false,
                     ),
                     EditText(
                       key: _concentrationKey1,
@@ -155,13 +156,13 @@ class _DilutionPageState extends State<DilutionPage> {
     setState(() {
       if (isUp) {
         _selectIndex--;
-        if (_selectIndex < 0) {
+        if (_selectIndex < 1) {
           _selectIndex = 3;
         }
       } else {
         _selectIndex++;
         if (_selectIndex > 3) {
-          _selectIndex = 0;
+          _selectIndex = 1;
         }
       }
     });
@@ -257,7 +258,7 @@ class _DilutionPageState extends State<DilutionPage> {
     double s2 = string2Num(_sizeKey2.currentState.controller.text.toString()) *
         _sizeKey2.currentState.unit;
     if (!e1 && !e3 && !e4) {
-      double value = c2 * s2 / c1;
+      double value = c2 * s2 / c1 / _sizeKey1.currentState.unit;
       _sizeKey1.currentState.controller.text = value.toString();
     } else {
       showToast("参数不足");
